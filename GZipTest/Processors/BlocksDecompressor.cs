@@ -21,7 +21,7 @@ public class BlocksDecompressor : AbstractFileBlocksProcessor
         dataBlocksForWriting.TryAdd(block.BlockIndex, stream.ToArray());
     }
 
-    public override async IAsyncEnumerable<DataBlock> GetCollectionOfBlocks()
+    public override async IAsyncEnumerable<DataBlock> GetCollectionOfBlocksAsync()
     {
         FileStream inputFileStream = new(this.inputFilePath, FileMode.Open);
 

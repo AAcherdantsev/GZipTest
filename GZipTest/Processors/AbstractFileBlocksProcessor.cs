@@ -46,7 +46,7 @@ public abstract class AbstractFileBlocksProcessor
         this.dataBlocksForWriting.NextBlockIsInCollection += WritingBlock;
     }
 
-    public abstract IAsyncEnumerable<DataBlock> GetCollectionOfBlocks();
+    public abstract IAsyncEnumerable<DataBlock> GetCollectionOfBlocksAsync();
 
     public abstract void ActionWithBlock(DataBlock block);
 
@@ -71,9 +71,9 @@ public abstract class AbstractFileBlocksProcessor
         }
     }
 
-    private async Task ReadingBloсks()
+    private async Task ReadingBloсksAsync()
     {
-        await foreach (DataBlock block in GetCollectionOfBlocks())
+        await foreach (DataBlock block in GetCollectionOfBlocksAsync())
         {
             this.readedBlocks.Add(block);
             this.logger.WriteMessage($"{Constants.EventMessageFileBlockHasBeenRead} {block.BlockIndex}");
@@ -92,11 +92,11 @@ public abstract class AbstractFileBlocksProcessor
         });
     }
 
-    public async void Run(CancellationToken token)
+    public async Task RunAsync(CancellationToken token)
     {
         this.outputFileStream = new FileStream(this.outputFilePath, FileMode.Create, FileAccess.Write, FileShare.Write, Constants.BlockSize * 2, true);
 
-        Task readingTask = this.ReadingBloсks();
+        Task readingTask = this.ReadingBloсksAsync();
 
         this.ProcessingBlocks();
 

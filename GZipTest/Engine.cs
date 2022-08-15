@@ -42,6 +42,6 @@ public class Engine
     {
         ArgumentNullException.ThrowIfNull(this.processor);
 
-        this.processor.Run(token);
+        _ = this.processor.RunAsync(token);
     }
 }
